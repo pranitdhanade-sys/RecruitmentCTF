@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VishwaCTF | Recruitment CTF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg: #050608;
+    --panel: #0b0d12;
+    --panel2: #10131b;
+    --text: #f4f5f8;
+    --muted: #9298a6;
+    --red: #991b1b;
+    --red2: #b91c1c;
+    --red-light: #ef4444;
+    --border: #343943;
+    --border-red: #641b22;
+    --green: #72d6a2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(#64748b18 1px, transparent 1px),
+        linear-gradient(90deg, #64748b18 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 700px;
+    height: 700px;
+    top: -300px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, #991b1b20, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.navbar {
+    position: fixed;
+    z-index: 100;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1100px, calc(100% - 32px));
+    padding: 13px 22px;
+    background: #090a0df2;
+    border: 1px solid #343943;
+    border-bottom: 2px solid var(--red2);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(18px);
+}
+
+.logo {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--red-light);
+}
+
+.nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+.nav-register {
+    background: var(--red);
+    border: 1px solid var(--red-light);
+    padding: 9px 17px;
+    border-radius: 7px;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: 0;
+    color: white;
+    font-size: 23px;
+}
+
+.container {
+    width: min(1100px, calc(100% - 40px));
+    margin: auto;
+}
+
+.hero {
+    min-height: 680px;
+    padding: 190px 0 100px;
+    display: grid;
+    grid-template-columns: 1.3fr .7fr;
+    align-items: center;
+    gap: 50px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid var(--border-red);
+    color: #fca5a5;
+    background: #991b1b18;
+    padding: 8px 13px;
+    border-radius: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    background: #ef4444;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #ef4444;
+}
+
+.hero h1 {
+    font-size: clamp(48px, 7vw, 82px);
+    line-height: .98;
+    letter-spacing: -5px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    color: var(--red-light);
+    display: block;
+}
+
+.hero-description {
+    color: var(--muted);
+    max-width: 550px;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 13px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 13px 21px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    transition: .2s;
+}
+
+.btn-primary {
+    background: var(--red);
+    border-color: var(--red-light);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--red2);
+    box-shadow: 0 0 25px #991b1b55;
+}
+
+.btn-secondary {
+    background: #10131b;
+    color: white;
+}
+
+.btn-secondary:hover {
+    border-color: var(--red-light);
+}
+
+.hero-terminal {
+    background: #090b10;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 80px #0008;
+    transform: rotate(1deg);
+}
+
+.terminal-header {
+    padding: 13px 17px;
+    background: #11141b;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.terminal-dot {
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+    background: #991b1b;
+}
+
+.terminal-dot:nth-child(2) {
+    background: #a16207;
+}
+
+.terminal-dot:nth-child(3) {
+    background: #15803d;
+}
+
+.terminal-title {
+    margin-left: 8px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+}
+
+.terminal-body {
+    padding: 25px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    line-height: 2.2;
+    color: var(--muted);
+}
+
+.terminal-body .command {
+    color: var(--green);
+}
+
+.terminal-body .highlight {
+    color: var(--red-light);
+}
+
+.terminal-body .white {
+    color: white;
+}
+
+.section {
+    padding: 80px 0;
+}
+
+.section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.section-label {
+    font-family: 'DM Mono', monospace;
+    color: var(--red-light);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
+    font-size: clamp(30px, 4vw, 43px);
+    letter-spacing: -2px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 350px;
+    line-height: 1.7;
+}
+
+.domain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.domain-card {
+    position: relative;
+    background: linear-gradient(145deg, #10131b, #090b10);
+    border: 1px solid var(--border);
+    padding: 25px;
+    min-height: 180px;
+    border-radius: 9px;
+    transition: .25s;
+    overflow: hidden;
+}
+
+.domain-card::after {
+    content: "";
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    right: -50px;
+    bottom: -60px;
+    background: #991b1b20;
+    filter: blur(25px);
+}
+
+.domain-card:hover {
+    border-color: var(--red-light);
+    transform: translateY(-4px);
+}
+
+.domain-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 23px;
+    color: var(--red-light);
+    margin-bottom: 25px;
+}
+
+.domain-card h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.domain-card p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.challenge-section {
+    background: #080a0e;
+    border-top: 1px solid #222630;
+    border-bottom: 1px solid #222630;
+}
+
+.challenge-toolbar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 200px;
+    background: #10131b;
+    color: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 15px;
+    outline: none;
+}
+
+.search-box:focus {
+    border-color: var(--red-light);
+}
+
+.filter-btn {
+    padding: 10px 14px;
+    background: #10131b;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    color: white;
+    border-color: var(--red-light);
+    background: #991b1b25;
+}
+
+.challenge-list {
+    display: grid;
+    gap: 10px;
+}
+
+.challenge {
+    display: grid;
+    grid-template-columns: 75px 1fr 130px 75px 85px;
+    gap: 15px;
+    align-items: center;
+    background: var(--panel);
+    border: 1px solid #252a34;
+    padding: 18px 20px;
+    border-radius: 7px;
+    transition: .2s;
+}
+
+.challenge:hover {
+    border-color: var(--border-red);
+    background: #101117;
+}
+
+.challenge-id {
+    color: var(--red-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+}
+
+.challenge-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.challenge-domain {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.challenge-points {
+    color: #fca5a5;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+}
+
+.difficulty {
+    font-size: 10px;
+    color: #fbbf24;
+    font-family: 'DM Mono', monospace;
+}
+
+.solve-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+.solve-btn:hover {
+    background: var(--red);
+    border-color: var(--red-light);
+}
+
+.empty-state {
+    color: var(--muted);
+    padding: 30px;
+    text-align: center;
+    display: none;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.info-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 28px;
+}
+
+.info-card h3 {
+    font-size: 19px;
+    margin-bottom: 18px;
+}
+
+.info-card ul {
+    list-style: none;
+}
+
+.info-card li {
+    color: var(--muted);
+    font-size: 13px;
+    padding: 11px 0;
+    border-bottom: 1px solid #252a34;
+    line-height: 1.6;
+}
+
+.info-card li:last-child {
+    border: 0;
+}
+
+.leaderboard {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.leaderboard-row {
+    display: grid;
+    grid-template-columns: 70px 1fr 100px;
+    padding: 17px 22px;
+    border-bottom: 1px solid #252a34;
+    font-size: 13px;
+}
+
+.leaderboard-row:last-child {
+    border: 0;
+}
+
+.leaderboard-row.header {
+    background: #12151d;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.coming-soon {
+    color: var(--red-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+}
+
+.cta {
+    text-align: center;
+    padding: 85px 25px;
+    border: 1px solid var(--border-red);
+    background: radial-gradient(ellipse at center, #991b1b20, #0b0d12 70%);
+    border-radius: 12px;
+}
+
+.cta h2 {
+    font-size: clamp(30px, 5vw, 48px);
+    letter-spacing: -2px;
+    margin-bottom: 15px;
+}
+
+.cta p {
+    color: var(--muted);
+    margin: 0 auto 25px;
+    max-width: 500px;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+footer {
+    margin-top: 80px;
+    padding: 30px 0;
+    border-top: 1px solid #252a34;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: #000c;
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    width: min(520px, 100%);
+    background: #0b0d12;
+    border: 1px solid var(--border-red);
+    border-radius: 11px;
+    padding: 30px;
+    box-shadow: 0 20px 100px #000;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    right: 18px;
+    top: 15px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 22px;
+}
+
+.modal-id {
+    color: var(--red-light);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    margin-bottom: 12px;
+}
+
+.modal h2 {
+    font-size: 25px;
+    margin-bottom: 13px;
+}
+
+.modal-description {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+.flag-input {
+    width: 100%;
+    padding: 13px;
+    background: #050608;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: white;
+    outline: none;
+    margin-bottom: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+}
+
+.flag-input:focus {
+    border-color: var(--red-light);
+}
+
+.flag-message {
+    font-size: 12px;
+    margin-top: 12px;
+    min-height: 18px;
+    color: var(--muted);
+}
+
+@media(max-width: 800px) {
+    .hero {
+        grid-template-columns: 1fr;
+        padding-top: 150px;
+    }
+
+    .hero-terminal {
+        max-width: 550px;
+    }
+
+    .domain-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .challenge {
+        grid-template-columns: 65px 1fr 75px;
+    }
+
+    .challenge-domain,
+    .difficulty {
+        display: none;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+    .navbar {
+        padding: 13px 17px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 58px;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        flex-direction: column;
+        align-items: stretch;
+        background: #090a0d;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-register {
+        text-align: center;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 140px 0 70px;
+    }
+
+    .hero h1 {
+        letter-spacing: -3px;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .section-heading {
+        align-items: start;
+        flex-direction: column;
+    }
+
+    .domain-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .challenge {
+        grid-template-columns: 60px 1fr 65px;
+        padding: 15px 12px;
+        gap: 8px;
+    }
+
+    .challenge-name {
+        font-size: 12px;
+    }
+
+    .challenge-points {
+        font-size: 10px;
+    }
+
+    .solve-btn {
+        padding: 7px;
+        font-size: 10px;
+    }
+
+    .leaderboard-row {
+        grid-template-columns: 45px 1fr 70px;
+        padding: 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <a href="#" class="logo">VISHWA<span>CTF</span></a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav-links" id="navLinks">
+        <a href="#domains" onclick="closeMenu()">Domains</a>
+        <a href="#challenges" onclick="closeMenu()">Challenges</a>
+        <a href="#rules" onclick="closeMenu()">Rules</a>
+        <a href="#leaderboard" onclick="closeMenu()">Leaderboard</a>
+        <a href="#register" class="nav-register" onclick="closeMenu()">Register ↗</a>
+    </div>
+</nav>
+
+<main>
+    <section class="container hero">
+        <div>
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                VISHWA CTF // RECRUITMENT ROUND
+            </div>
+
+            <h1>BREAK THE<br><span>ORDINARY.</span></h1>
+
+            <p class="hero-description">
+                Think like an attacker. Investigate like a detective.
+                Decode what others cannot. Put your cybersecurity skills
+                to the test and prove that you belong in the world of CTF.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#challenges" class="btn btn-primary">Explore Challenges ↗</a>
+                <a href="#domains" class="btn btn-secondary">Explore Domains</a>
+            </div>
+        </div>
+
+        <div class="hero-terminal">
+            <div class="terminal-header">
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-title">vishwa@ctf:~</span>
+            </div>
+            <div class="terminal-body">
+                <div><span class="command">┌──(vishwa㉿ctf)-[~]</span></div>
+                <div><span class="command">└─$</span> ./start_challenge.sh</div>
+                <div class="white">Initializing VishwaCTF...</div>
+                <div>[+] Loading challenge environment</div>
+                <div>[+] Connecting to server</div>
+                <div>[+] Loading six domains</div>
+                <br>
+                <div class="highlight">ACCESS GRANTED.</div>
+                <div class="white">Your investigation starts here.</div>
+                <br>
+                <div><span class="command">└─$</span> <span class="white">_</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container section" id="domains">
+        <div class="section-heading">
+            <div>
+                <div class="section-label">01 // ATTACK SURFACE</div>
+                <h2>Choose Your Domain.</h2>
+            </div>
+            <p>Six disciplines. Different ways to think. One objective: find the flag.</p>
+        </div>
+
+        <div class="domain-grid">
+            <div class="domain-card">
+                <div class="domain-icon">⌘ 01</div>
+                <h3>Cryptography</h3>
+                <p>Break encryption, uncover weak implementations and decode hidden messages.</p>
+            </div>
+
+            <div class="domain-card">
+                <div class="domain-icon">⌬ 02</div>
+                <h3>Reverse Engineering</h3>
+                <p>Dissect binaries, understand program behaviour and uncover hidden logic.</p>
+            </div>
+
+            <div class="domain-card">
+                <div class="domain-icon">◈ 03</div>
+                <h3>Digital Forensics</h3>
+                <p>Investigate digital evidence, inspect artifacts and reconstruct events.</p>
+            </div>
+
+            <div class="domain-card">
+                <div class="domain-icon">⌁ 04</div>
+                <h3>Web Exploitation</h3>
+                <p>Find vulnerabilities, exploit application logic and inspect web infrastructure.</p>
+            </div>
+
+            <div class="domain-card">
+                <div class="domain-icon">◎ 05</div>
+                <h3>OSINT</h3>
+                <p>Collect open-source intelligence and connect seemingly unrelated clues.</p>
+            </div>
+
+            <div class="domain-card">
+                <div class="domain-icon">▧ 06</div>
+                <h3>Steganography</h3>
+                <p>Find concealed information hidden inside images, files and media.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section challenge-section" id="challenges">
+        <div class="container">
+            <div class="section-heading">
+                <div>
+                    <div class="section-label">02 // MISSION CONTROL</div>
+                    <h2>Challenge Board.</h2>
+                </div>
+                <p>Investigate the files. Solve the puzzles. Submit the correct flag.</p>
+            </div>
+
+            <div class="challenge-toolbar">
+                <input type="text" id="searchInput" class="search-box"
+                    placeholder="Search challenges..." oninput="filterChallenges()">
+
+                <button class="filter-btn active" data-filter="All" onclick="setFilter('All',this)">All</button>
+                <button class="filter-btn" data-filter="Cryptography" onclick="setFilter('Cryptography',this)">Crypto</button>
+                <button class="filter-btn" data-filter="Reverse Engineering" onclick="setFilter('Reverse Engineering',this)">Reverse</button>
+                <button class="filter-btn" data-filter="Digital Forensics" onclick="setFilter('Digital Forensics',this)">Forensics</button>
+                <button class="filter-btn" data-filter="Web Exploitation" onclick="setFilter('Web Exploitation',this)">Web</button>
+                <button class="filter-btn" data-filter="OSINT" onclick="setFilter('OSINT',this)">OSINT</button>
+                <button class="filter-btn" data-filter="Steganography" onclick="setFilter('Steganography',this)">Stego</button>
+            </div>
+
+            <div class="challenge-list" id="challengeList"></div>
+            <div class="empty-state" id="emptyState">No challenges found.</div>
+        </div>
+    </section>
+
+    <section class="container section" id="rules">
+        <div class="section-heading">
+            <div>
+                <div class="section-label">03 // READ BEFORE DEPLOYMENT</div>
+                <h2>Rules of Engagement.</h2>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>General Rules</h3>
+                <ul>
+                    <li>Do not share flags or complete solutions with other participants.</li>
+                    <li>Do not attack the CTF infrastructure or other participants.</li>
+                    <li>Use only the resources and challenge files provided.</li>
+                    <li>Do not brute-force the platform or disrupt its services.</li>
+                    <li>Follow the instructions provided with each challenge.</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Flag Format</h3>
+                <ul>
+                    <li>All flags follow the format: <strong>VishwaCTF{...}</strong></li>
+                    <li>Flags are case-sensitive.</li>
+                    <li>Submit the complete flag, including the prefix and braces.</li>
+                    <li>Each challenge has its own unique flag.</li>
+                    <li>Contact the organizers if you encounter a technical issue.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="container section" id="leaderboard">
+        <div class="section-heading">
+            <div>
+                <div class="section-label">04 // TOP OPERATORS</div>
+                <h2>Leaderboard.</h2>
+            </div>
+            <span class="coming-soon">● LIVE SCORES COMING SOON</span>
+        </div>
+
+        <div class="leaderboard">
+            <div class="leaderboard-row header">
+                <span>Rank</span>
+                <span>Participant</span>
+                <span>Points</span>
+            </div>
+            <div class="leaderboard-row">
+                <span>--</span>
+                <span>Awaiting participants</span>
+                <span>--</span>
+            </div>
+            <div class="leaderboard-row">
+                <span>--</span>
+                <span>Awaiting participants</span>
+                <span>--</span>
+            </div>
+            <div class="leaderboard-row">
+                <span>--</span>
+                <span>Awaiting participants</span>
+                <span>--</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="register">
+        <div class="cta">
+            <div class="section-label">YOUR NEXT MOVE</div>
+            <h2>Ready to exploit?</h2>
+            <p>
+                The challenges are waiting. Bring your curiosity,
+                sharpen your tools and show us what you can do.
+            </p>
+            <a href="#challenges" class="btn btn-primary">Enter the Challenge Arena ↗</a>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container footer-content">
+        <div>© 2026 VishwaCTF Recruitment CTF</div>
+        <div>CyberCell VIT Pune // Think. Hack. Learn.</div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="challengeModal" onclick="closeModalOutside(event)">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div class="modal-id" id="modalId">CRY-01 // CRYPTOGRAPHY</div>
+        <h2 id="modalTitle">Challenge Name</h2>
+        <p class="modal-description" id="modalDescription"></p>
+
+        <input type="text" class="flag-input" id="flagInput"
+            placeholder="VishwaCTF{your_flag_here}">
+
+        <button class="btn btn-primary" style="width:100%" onclick="submitFlag()">
+            Submit Flag →
+        </button>
+
+        <div class="flag-message" id="flagMessage"></div>
+    </div>
+</div>
+
+<script>
+const challenges = [
+    {
+        id: "CRY-01",
+        title: "Reused Secrets",
+        domain: "Cryptography",
+        points: 100,
+        difficulty: "MEDIUM",
+        description: "A collection of encrypted messages was recovered. Something about the encryption process was reused. Investigate the ciphertexts and uncover the original message."
+    },
+    {
+        id: "CRY-02",
+        title: "The Shifted Archive",
+        domain: "Cryptography",
+        points: 150,
+        difficulty: "MEDIUM",
+        description: "An archived message was protected using a classical cipher. The original key is missing. Analyze the encryption and recover the hidden plaintext."
+    },
+    {
+        id: "CRY-03",
+        title: "Prime Suspect",
+        domain: "Cryptography",
+        points: 200,
+        difficulty: "MEDIUM",
+        description: "A suspicious public-key cryptographic exchange has been intercepted. Examine the parameters and determine whether the key generation was implemented securely."
+    },
+    {
+        id: "REV-01",
+        title: "Not So Secret",
+        domain: "Reverse Engineering",
+        points: 150,
+        difficulty: "MEDIUM",
+        description: "A binary file contains a hidden secret. Analyze the executable, understand its logic and recover the expected input."
+    },
+    {
+        id: "FOR-01",
+        title: "Packet After Midnight",
+        domain: "Digital Forensics",
+        points: 150,
+        difficulty: "MEDIUM",
+        description: "A network capture was recovered from a compromised machine. Examine the traffic and identify the information that was transferred."
+    },
+    {
+        id: "WEB-01",
+        title: "Trust the Cookie?",
+        domain: "Web Exploitation",
+        points: 200,
+        difficulty: "MEDIUM",
+        description: "A web application relies on client-side session data. Inspect its behaviour and investigate whether the application trusts information it should not."
+    },
+    {
+        id: "OSI-01",
+        title: "A Place in the Pixels",
+        domain: "OSINT",
+        points: 150,
+        difficulty: "MEDIUM",
+        description: "A few digital clues point towards a specific location. Correlate publicly available information to identify the answer."
+    },
+    {
+        id: "STE-01",
+        title: "Silent Layers",
+        domain: "Steganography",
+        points: 150,
+        difficulty: "MEDIUM",
+        description: "An image contains more than what is visible. Inspect its structure, metadata and hidden data to recover the concealed message."
+    }
+];
+
+let currentFilter = "All";
+let selectedChallenge = null;
+
+function renderChallenges() {
+    const list = document.getElementById("challengeList");
+    const search = document.getElementById("searchInput").value.toLowerCase();
+
+    const filtered = challenges.filter(challenge => {
+        const matchesFilter = currentFilter === "All" || challenge.domain === currentFilter;
+        const matchesSearch =
+            challenge.title.toLowerCase().includes(search) ||
+            challenge.id.toLowerCase().includes(search) ||
+            challenge.domain.toLowerCase().includes(search);
+
+        return matchesFilter && matchesSearch;
+    });
+
+    list.innerHTML = "";
+
+    document.getElementById("emptyState").style.display =
+        filtered.length === 0 ? "block" : "none";
+
+    filtered.forEach(challenge => {
+        const row = document.createElement("div");
+        row.className = "challenge";
+
+        row.innerHTML = `
+            <span class="challenge-id">${challenge.id}</span>
+            <span class="challenge-name">${challenge.title}</span>
+            <span class="challenge-domain">${challenge.domain}</span>
+            <span class="challenge-points">${challenge.points} PTS</span>
+            <button class="solve-btn">View →</button>
+        `;
+
+        row.querySelector("button").addEventListener("click", () => {
+            openChallenge(challenge.id);
+        });
+
+        list.appendChild(row);
+    });
+}
+
+function setFilter(filter, button) {
+    currentFilter = filter;
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    renderChallenges();
+}
+
+function filterChallenges() {
+    renderChallenges();
+}
+
+function openChallenge(id) {
+    selectedChallenge = challenges.find(challenge => challenge.id === id);
+
+    if (!selectedChallenge) return;
+
+    document.getElementById("modalId").textContent =
+        selectedChallenge.id + " // " + selectedChallenge.domain.toUpperCase();
+
+    document.getElementById("modalTitle").textContent =
+        selectedChallenge.title;
+
+    document.getElementById("modalDescription").textContent =
+        selectedChallenge.description;
+
+    document.getElementById("flagInput").value = "";
+    document.getElementById("flagMessage").textContent = "";
+
+    document.getElementById("challengeModal").classList.add("show");
+}
+
+function closeModal() {
+    document.getElementById("challengeModal").classList.remove("show");
+}
+
+function closeModalOutside(event) {
+    if (event.target.id === "challengeModal") {
+        closeModal();
+    }
+}
+
+function submitFlag() {
+    const flag = document.getElementById("flagInput").value.trim();
+    const message = document.getElementById("flagMessage");
+
+    if (!flag) {
+        message.style.color = "#ef4444";
+        message.textContent = "Please enter a flag.";
+        return;
+    }
+
+    if (!/^VishwaCTF\{.+\}$/.test(flag)) {
+        message.style.color = "#ef4444";
+        message.textContent = "Invalid flag format. Expected VishwaCTF{...}";
+        return;
+    }
+
+    message.style.color = "#fbbf24";
+    message.textContent = "Flag format accepted. Server-side validation is not configured.";
+}
+
+function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("open");
+}
+
+function closeMenu() {
+    document.getElementById("navLinks").classList.remove("open");
+}
+
+renderChallenges();
+</script>
+
+</body>
+</html>
